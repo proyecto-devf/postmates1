@@ -1,22 +1,31 @@
-const { GraphQLServer } =  require('graphql-yoga');
+require('dotenv').config();
 
+const { GraphQLServer } = require('graphql-yoga');
 
+const {importSchema} = require('graphql-import');
 
-const typeDefs = `
+const mongoose = require('mongoose');
 
-	type Query{
-		prueba:String!,
-		saludo(texto:String!):String!
-	}
-`
+const resolvers = require('./resolvers');
 
-const resolvers = {
-	Query:{
-		prueba: () => "Hola desde graphql",
-		saludo: (_,{texto}) => `Hola ${texto}`
-	}
-}
+const { AuthDirective } = require('./resolvers/directives')
 
-const server =  new GraphQLServer({typeDefs,resolvers})
+const typeDefs = importSchema('./app/schema.graphql');
 
-server.start(() => console.log("Server is working in port 4000"));
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser : true });
+
+const mongo = mongoose.connection;
+
+mongo.on('error', (error) => console.log(error))
+    .once('open', () => console.log('Conexión a pase de datos'));
+
+    
+const server = new GraphQLServer({
+   typeDefs,
+   resolvers,
+   schemaDirectives:{
+    auth: AuthDirective
+   }
+});
+
+server.start(() => console.log('server is working in port 4000'))

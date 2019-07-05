@@ -1,15 +1,12 @@
-const PedidoModel = require('../models/pedido');
+const RestauranteModel = require('../models/Restaurante');
 
-const listarPedidos = async(root,params,context,info) => {
-    const pedidos = await PedidoModel.find({});
-    return pedidos
+//El nombre  listaRestaurantes debe ser igual al delfinido al esquema
+const listaRestaurantes = async(root, params, context, info) => {
+    const restaurante = await RestauranteModel.find({})
+
+    return restaurante;
 }
 
-const soloPedido = async(root,params,context,info) => {
-    const pedido = await PedidoModel.findById(params,id);
-    if(!pedido) throw new Error("El pedido no existeee!!");
-
-    return pedido.toObject();
+module.exports = {
+    listaRestaurantes
 }
-
-const 

@@ -1,0 +1,20 @@
+type Query {
+    listaRestaurantes:[Restaurante]!
+}
+
+type Mutation{
+    crearRestaurante(data:crearRestauranteInput!):Restaurante
+}
+
+type Restaurante{
+    _id:ID
+    cNombre:String!
+    cDescripcion: String!
+    lEstatus:Boolean
+}
+
+input crearRestauranteInput {
+    cNombre: String!
+    cDescripcion: String!
+    lEstatus:Boolean
+}
