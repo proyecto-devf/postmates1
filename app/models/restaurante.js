@@ -3,15 +3,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const RestauranteSchema = new Schema({
-    cNombre:{
-        type:String,
-        unique:true,
-        required:true
-    },
-    cDescripcion:{
+    nombre:{
         type:String
     },
-    lEstatus:{
+    descripcion:{
+        type:String
+    },
+    comidas:{
+		type:[Schema.Types.ObjectId],
+		ref:'comidas'
+	},
+    activo:{
         type:Boolean,
         default:true
     }    

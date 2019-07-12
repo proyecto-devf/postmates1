@@ -3,57 +3,55 @@ const bcrypt =  require('bcrypt');
 
 const Schema =  mongoose.Schema;
 
-
 const AuthorSchema = new Schema({
-
-	first_name:{
+	nombre:{
 		type:String,
 		required:true
 	},
-	last_name:{
+	apellido:{
 		type:String,
 		required:true
 	},
-	email:{
+	correo:{
 		type:String,
 		required:true,
 		unique:true
 	},
-	password:{
+	contrasenia:{
 		type:String,
 		required:true
 	},
-	birth_date:{
+	fecha_nacimiento:{
 		type:Date
 	},
-	gender:{
+	genero:{
 		type:String,
-		enum:["H","M","O"]
+		enum:["H","M"]
 	},
-	profile_picture:{
+	imagen_perfil:{
 		type:String
 	},
-	is_active:{
+	activo:{
 		type:Boolean,
 		default:true
 	}
 
-}, {collection:"authors",timestamps:true} );
+}, {collection:"usuario",timestamps:true} );
 
 AuthorSchema.pre('save',function(next){
-	const author =  this;
+	const oUsuario =  this;
 	const SALT_FACTOR =  10
-	if(!author.isModified("password")) {return next()}
+	if(!oUsuario.isModified("contrasenia")) {return next()}
 	bcrypt.genSalt(SALT_FACTOR,function(err,salt){
 		if(err) return next(err);
 
-		bcrypt.hash(author.password,salt,function(err,hash){
+		bcrypt.hash(oUsuario.contrasenia,salt,function(err,hash){
 			if(err) return next(err);
-			author.password =  hash;
+			oUsuario.contrasenia =  hash;
 			next();
 		})
 	})
 
 });
 
-module.exports =  mongoose.model('authors',AuthorSchema);
+module.exports =  mongoose.model('usuario',AuthorSchema);

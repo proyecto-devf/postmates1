@@ -20,12 +20,15 @@ const PedidoSchema = new Schema ({
     direccion_entrega:{
         type:String
     },
-    longitud:{
-        type:Number
-    },
-    latitud:{
-        type:Number
-    },
+
+    coordenadas:[{
+        longitud:{
+            type:Number
+        },
+        latitud:{
+            type:Number
+        },
+    }],
     fecha_registro:{
         type:String
     },

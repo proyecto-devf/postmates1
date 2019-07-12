@@ -1,20 +1,95 @@
-type Query {
-    listaRestaurantes:[Restaurante]!
+scalar Upload
+directive @auth on FIELD_DEFINITION | FIELD
+
+type Query{
+	lstUsuarios:[Author]! @auth
+	singleAuthor(id:ID!):Author!
+	lstRestaurante:[Restaurante]! @auth
+	lstComidas:[Comida]!
 }
 
 type Mutation{
-    crearRestaurante(data:crearRestauranteInput!):Restaurante
+	crearUsuario(data:createAuthorInput!):Author! 
+	login(correo:String!,contrasenia:String):Auth! 
+	crearRestaurante(data:crearRestauranteInput!):Restaurante! @auth
+    actualizarRestaurante(data:actualizarRestauranteInput!):Restaurante! @auth
+	eliminaRestaurante(id:ID):String! @auth
+	crearComida(data:crearComidaRestaurante!):Comida! @auth
 }
 
 type Restaurante{
-    _id:ID
-    cNombre:String!
-    cDescripcion: String!
-    lEstatus:Boolean
+	_id:ID
+	nombre:String!
+	descripcion:String!
+	activo:Boolean!
+}
+
+type Comida {
+	_id:ID
+	nombre:String!
+	precio:Int!
+	descripcion:String!
+	activo:Boolean!
+}
+
+input crearComidaRestaurante {
+	nombre:String!
+	precio:Int!
+	descripcion:String!
+	activo:Boolean!
 }
 
 input crearRestauranteInput {
-    cNombre: String!
-    cDescripcion: String!
-    lEstatus:Boolean
+	nombre:String!
+	descripcion:String!
+	activo:Boolean!
+}
+
+input actualizarRestauranteInput {
+	_id:String!
+	nombre:String!
+	descripcion:String
+	activo:Boolean
+}
+
+type Auth {
+	token:String!
+	message:String!
+}
+
+type Author{
+	_id:ID
+	nombre:String!
+	apellido:String!
+	contrasenia:String!
+	correo:String!
+	fecha_nacimiento:String
+	genero:GENDERS
+	imagen_perfil:String
+	activo:Boolean!
+}
+
+enum GENDERS {
+	H
+	M
+}
+
+input createAuthorInput {
+	nombre:String!
+	apellido:String!
+	correo:String!
+	contrasenia:String!
+	fecha_nacimiento:String
+	genero:GENDERS
+	imagen_perfil:String
+}
+
+input updateAuthorInput {
+	nombre:String
+	apellido:String
+	correo:String
+	contrasenia:String
+	fecha_nacimiento:String
+	genero:GENDERS
+	imagen_perfil:String
 }
