@@ -1,4 +1,4 @@
-const AuthorModel =  require('../models/Author');
+const AuthorModel =  require('../models/usuarios');
 const RestauranteModel = require('../models/Restaurante');
 const ComidaModel = require('../models/Comida')
 const authenticate =  require('../utils/authenticate');
@@ -16,7 +16,16 @@ const crearUsuario =  async(root,params,context,info) => {
 //Crea restaurantes
 const crearRestaurante = async(root,params,context,info) => {
 
-	console.log(params.data);
+	//console.log(params.data);
+	if(params.data.cover_photo){
+		console.log("si hay foto")
+		const { createReadStream } = await params.data.cover_photo;
+		const stream =  createReadStream();
+		const { url } =  await storage({ stream });
+
+		params.data.cover_photo =  url;
+	} 
+
 	const oNuevoRestaurante = await RestauranteModel.create(params.data)
 							.catch( e => { console.log(e.message) })
 	if(!oNuevoRestaurante) throw new Error("No se creo el 'author'");
@@ -30,10 +39,20 @@ const crearComida = async(root,params,context,info) =>{
 	const oComida = await ComidaModel.create(params.data)
 								.catch( e => {throw new Error("Error al crear comida")} )
 
-	//const nuevaComida = await RestauranteModel.findOne({_id:oComida._id}).populate('restaurante');
-	//await AuthorModel.findByIdAndUpdate(user.id,{$push:{posts:post}})
+	const lstComidas = await ComidaModel.findOne({_id:oComida._id}).populate('restaurante');
+	await AuthorModel.findByIdAndUpdate(oComida.restaurante,{$push:{comidas:lstComidas}})
+
 	 return oComida.toObject();
 }
+
+//Actualizar comida
+const actualizarComida = async(root,params,context,info) => {
+	const {data} = params;
+	const actualizaComida = await ComidaModel.findOneAndUpdate({_id:data._id},{$set:{...data}},{new:true})
+
+	return actualizaComida.toObject();
+}
+
 
 //Actualiza restaurantes
 const actualizarRestaurante = async(root,params,context,info) => {
@@ -53,6 +72,15 @@ const eliminaRestaurante = async(root,params,context,info) => {
 	return "restaurante eliminado"
 }
 
+//Eliminar comida
+const eliminaComida = async(root,params,context,info) => {
+
+	const {data} = params;
+	console.log(data);
+	await ComidaModel.findOneAndUpdate({_id:data},{$set:{activo:false}})
+
+	return "comida eliminado"
+}
 
 //inicia sesión usuario
 const login =  async(root,params,context,info) => {
@@ -69,5 +97,7 @@ module.exports = {
 	crearRestaurante,
 	actualizarRestaurante,
 	eliminaRestaurante,
-	crearComida
+	crearComida,
+	actualizarComida,
+	eliminaComida
 }

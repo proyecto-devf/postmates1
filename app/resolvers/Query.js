@@ -1,4 +1,4 @@
-const AuthorModel =  require('../models/Author');
+const AuthorModel =  require('../models/usuarios');
 const RestauranteModel =  require('../models/Restaurante');
 const ComidaModel = require('../models/Comida')
 

@@ -12,6 +12,9 @@ const ComidaSchema =  new Schema({
 		type:String,
 		required:true
 	},	
+	cover_photo:{
+		type:String
+	},
 	descripcion:{
 		type:String
 	},

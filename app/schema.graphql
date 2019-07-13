@@ -13,30 +13,36 @@ type Mutation{
 	login(correo:String!,contrasenia:String):Auth! 
 	crearRestaurante(data:crearRestauranteInput!):Restaurante! @auth
     actualizarRestaurante(data:actualizarRestauranteInput!):Restaurante! @auth
+    actualizarComida(data:actualizarComidaInput!):Comida! @auth
 	eliminaRestaurante(id:ID):String! @auth
+	eliminaComida(id:ID):String! @auth
 	crearComida(data:crearComidaRestaurante!):Comida! @auth
 }
-
 type Restaurante{
 	_id:ID
 	nombre:String!
 	descripcion:String!
 	activo:Boolean!
+	comidas:[Comida]!
 }
 
 type Comida {
 	_id:ID
 	nombre:String!
 	precio:Int!
+	cover_photo:String
 	descripcion:String!
-	activo:Boolean!
+	restaurante:String!
+	activo:Boolean
 }
 
 input crearComidaRestaurante {
 	nombre:String!
 	precio:Int!
-	descripcion:String!
-	activo:Boolean!
+	cover_photo:String
+	descripcion:String
+	restaurante:String!
+	activo:Boolean
 }
 
 input crearRestauranteInput {
@@ -50,6 +56,15 @@ input actualizarRestauranteInput {
 	nombre:String!
 	descripcion:String
 	activo:Boolean
+}
+
+input actualizarComidaInput {
+	_id:ID
+	nombre:String!
+	precio:Int!
+	descripcion:String!
+	restaurante:String!
+	activo:Boolean!
 }
 
 type Auth {

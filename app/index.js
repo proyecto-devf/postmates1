@@ -8,7 +8,7 @@ const { AuthDirective } = require('./resolvers/directives')
 const typeDefs = importSchema(__dirname + '/schema.graphql');
 const verifyToken =  require('./utils/verifyToken');
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser : true });
+mongoose.connect(process.env.MONGO_URI_DEV, { useNewUrlParser : true });
 
 const mongo = mongoose.connection;
 
