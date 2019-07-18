@@ -1,5 +1,6 @@
 const AuthorModel =  require('../models/usuarios');
 const RestauranteModel = require('../models/Restaurante');
+const PedidoModel = require('../models/pedido');
 const ComidaModel = require('../models/Comida')
 const authenticate =  require('../utils/authenticate');
 const storage =  require('../utils/storage');
@@ -16,16 +17,6 @@ const crearUsuario =  async(root,params,context,info) => {
 //Crea restaurantes
 const crearRestaurante = async(root,params,context,info) => {
 
-	//console.log(params.data);
-	if(params.data.cover_photo){
-		console.log("si hay foto")
-		const { createReadStream } = await params.data.cover_photo;
-		const stream =  createReadStream();
-		const { url } =  await storage({ stream });
-
-		params.data.cover_photo =  url;
-	} 
-
 	const oNuevoRestaurante = await RestauranteModel.create(params.data)
 							.catch( e => { console.log(e.message) })
 	if(!oNuevoRestaurante) throw new Error("No se creo el 'author'");
@@ -35,14 +26,43 @@ const crearRestaurante = async(root,params,context,info) => {
 //Crear comida
 const crearComida = async(root,params,context,info) =>{
 
-	console.log(params);
+	console.log(params.data);
+
+	if(params.data.cover_photo){
+		console.log("si hay foto")
+		const { createReadStream } = await params.data.cover_photo;
+		const stream =  createReadStream();
+		const { url } =  await storage({ stream });
+
+		params.data.cover_photo =  url;
+	} 
+
 	const oComida = await ComidaModel.create(params.data)
 								.catch( e => {throw new Error("Error al crear comida")} )
 
 	const lstComidas = await ComidaModel.findOne({_id:oComida._id}).populate('restaurante');
-	await AuthorModel.findByIdAndUpdate(oComida.restaurante,{$push:{comidas:lstComidas}})
+
+	await RestauranteModel.findByIdAndUpdate(oComida.restaurante,{$push:{comidas:lstComidas}})
 
 	 return oComida.toObject();
+}
+
+//Crear  pedido
+const crearPedido = async(root,params,context,info) =>{
+ 
+	console.log(params.data);
+	
+	const pedido = await PedidoModel.create(params.data)
+								.catch( e => { console.log(e.message)});
+	
+	if(!pedido) throw new Error("No se creo el pedido");
+
+	// const newAuthor =  await AuthorModel.create(params.data)
+	// 						.catch( e => {throw new Error("Ocurrio un problema") } )
+	// if(!newAuthor) throw new Error("No se creo el 'author'");
+	// return newAuthor.toObject();
+
+	return pedido.toObject();;
 }
 
 //Actualizar comida
@@ -99,5 +119,6 @@ module.exports = {
 	eliminaRestaurante,
 	crearComida,
 	actualizarComida,
-	eliminaComida
+	eliminaComida,
+	crearPedido
 }

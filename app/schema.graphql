@@ -17,7 +17,9 @@ type Mutation{
 	eliminaRestaurante(id:ID):String! @auth
 	eliminaComida(id:ID):String! @auth
 	crearComida(data:crearComidaRestaurante!):Comida! @auth
+	crearPedido(data:crearPedidoInput!):Pedido! @auth
 }
+
 type Restaurante{
 	_id:ID
 	nombre:String!
@@ -39,9 +41,9 @@ type Comida {
 input crearComidaRestaurante {
 	nombre:String!
 	precio:Int!
-	cover_photo:String
+	cover_photo:Upload
 	descripcion:String
-	restaurante:String!
+	restaurante:String
 	activo:Boolean
 }
 
@@ -62,9 +64,9 @@ input actualizarComidaInput {
 	_id:ID
 	nombre:String!
 	precio:Int!
-	descripcion:String!
-	restaurante:String!
-	activo:Boolean!
+	descripcion:String
+	restaurante:String
+	activo:Boolean
 }
 
 type Auth {
@@ -76,6 +78,7 @@ type Author{
 	_id:ID
 	nombre:String!
 	apellido:String!
+	telefono:String!
 	contrasenia:String!
 	correo:String!
 	fecha_nacimiento:String
@@ -92,6 +95,7 @@ enum GENDERS {
 input createAuthorInput {
 	nombre:String!
 	apellido:String!
+	telefono:String!
 	correo:String!
 	contrasenia:String!
 	fecha_nacimiento:String
@@ -99,9 +103,34 @@ input createAuthorInput {
 	imagen_perfil:String
 }
 
+input crearPedidoInput{
+	total:String!
+	cliente:String!
+	direccion_entrega:String!
+	detalle:[AddComida]
+}
+
+input AddComida{
+	comida:String
+	cantidad:String
+} 
+
+type Pedido {
+	total:String!
+	cliente:String!
+	direccion_entrega:String!
+	detalle:[DetalleComida]
+}
+
+type DetalleComida{
+	comida:String
+	cantidad:String
+}
+
 input updateAuthorInput {
 	nombre:String
 	apellido:String
+	telefono:String
 	correo:String
 	contrasenia:String
 	fecha_nacimiento:String

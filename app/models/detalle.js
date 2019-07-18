@@ -9,16 +9,16 @@ const detalleSchema = new Schema ({
         type:String
     },
     pedidos:{
-        type:[Schema.Types.ObjectId],
-        ref:'pedidoss'        
-    },
-    subtotal:{
-        type:Number
-    },
-    is_active:{
-        type:Boolean,
-        default:true
+        type:Schema.Types.ObjectId,
+        ref:'pedidos'        
     }
+    // subtotal:{
+    //     type:Number
+    // },
+    // activo:{
+    //     type:Boolean,
+    //     default:true
+    // }
 }, {collection:"detalles", timestamps:true});
 
 module.exports = mongoose.model('detalle', detalleSchema);

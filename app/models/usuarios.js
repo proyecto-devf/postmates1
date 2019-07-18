@@ -12,6 +12,10 @@ const AuthorSchema = new Schema({
 		type:String,
 		required:true
 	},
+	telefono:{
+		type:String,
+		required:true
+	},
 	correo:{
 		type:String,
 		required:true,
@@ -26,7 +30,8 @@ const AuthorSchema = new Schema({
 	},
 	genero:{
 		type:String,
-		enum:["H","M"]
+		enum:["H","M"],
+		required:true
 	},
 	imagen_perfil:{
 		type:String

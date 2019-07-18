@@ -2,25 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PedidoSchema = new Schema ({
-
     total:{
-        type:Number,
+        type:String,
         required:true
     },
-
-    restaurante:{
-        type:String
-    },
-
     cliente:{
         type:String,
         required:true
     },
-
     direccion_entrega:{
         type:String
     },
-
     coordenadas:[{
         longitud:{
             type:Number
@@ -32,11 +24,16 @@ const PedidoSchema = new Schema ({
     fecha_registro:{
         type:String
     },
-
-    detalle:{
-        type:[Schema.Types.ObjectId],
-        ref:'detalles'        
-    }
+    detalle:[
+       {
+           comida:{
+               type:String
+           },
+           cantidad:{
+               type:String
+           }
+       }
+    ]
 }, {collection:'pedidos',timestamps:true});
 
-PedidoSchema.pre()
+module.exports = mongoose.model("pedido", PedidoSchema);
