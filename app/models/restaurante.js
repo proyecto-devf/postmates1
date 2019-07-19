@@ -12,12 +12,6 @@ const RestauranteSchema = new Schema({
     correo:{
         type:String,
     },
-    ubicacion:[
-        {
-            logintud:String,
-            latitud:String
-        }
-    ],
     descripcion:{
         type:String
     },

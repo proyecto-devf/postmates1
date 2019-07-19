@@ -12,7 +12,7 @@ type Query{
 type Mutation{
 	crearUsuario(data:createAuthorInput!):Author! 
 	login(correo:String!,contrasenia:String):Auth! 
-	crearRestaurante(data:crearRestauranteInput!):Restaurante! @auth
+	crearRestaurante(data:crearRestauranteInput!):Restaurante! 
     actualizarRestaurante(data:actualizarRestauranteInput!):Restaurante! @auth
     actualizarComida(data:actualizarComidaInput!):Comida! @auth
 	eliminaRestaurante(id:ID):String! @auth
@@ -55,7 +55,7 @@ input crearRestauranteInput {
 	telefono:String!
 	correo:String!
 	descripcion:String!
-	activo:Boolean!
+	activo:Boolean
 }
 
 input actualizarRestauranteInput {

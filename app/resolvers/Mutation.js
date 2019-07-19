@@ -16,7 +16,7 @@ const crearUsuario =  async(root,params,context,info) => {
 
 //Crea restaurantes
 const crearRestaurante = async(root,params,context,info) => {
-
+	console.log(params.data);
 	const oNuevoRestaurante = await RestauranteModel.create(params.data)
 							.catch( e => { console.log(e.message) })
 	if(!oNuevoRestaurante) throw new Error("No se creo el 'author'");
