@@ -6,6 +6,7 @@ type Query{
 	singleAuthor(id:ID!):Author!
 	lstRestaurante:[Restaurante]! @auth
 	lstComidas:[Comida]!
+	buscarComida(id:ID!):Comida!
 }
 
 type Mutation{
@@ -23,6 +24,8 @@ type Mutation{
 type Restaurante{
 	_id:ID
 	nombre:String!
+	telefono:String!
+	correo:String!
 	descripcion:String!
 	activo:Boolean!
 	comidas:[Comida]!
@@ -49,6 +52,8 @@ input crearComidaRestaurante {
 
 input crearRestauranteInput {
 	nombre:String!
+	telefono:String!
+	correo:String!
 	descripcion:String!
 	activo:Boolean!
 }

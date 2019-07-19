@@ -33,8 +33,8 @@ const crearComida = async(root,params,context,info) =>{
 		const { createReadStream } = await params.data.cover_photo;
 		const stream =  createReadStream();
 		const { url } =  await storage({ stream });
-
-		params.data.cover_photo =  url;
+		console.log(url);
+		params.data.cover_photo = url;
 	} 
 
 	const oComida = await ComidaModel.create(params.data)

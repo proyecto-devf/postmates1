@@ -17,20 +17,26 @@ const lstRestaurante =  async(root,params,context,info) => {
 const lstComidas =  async(root,params,context,info) => {
 	const lstComida = await ComidaModel.find({activo:true});
 	
-	return lstComida
+	return lstComida;
 }
 
-const singleAuthor  =  async(root,params,context,info) => {
+const buscarComida = async(root,params, context, info) => {
 
-	const author =  await AuthorModel.findById(params.id).posts('posts');
-	if (!author) throw new Error("Author no existe");
+	const oComida = await ComidaModel.findById(params.id);
+	if(!oComida) throw new Error("Comida no existe")
 
-	return author.toObject();
+	return oComida.toObject();
+
+	// const post = await PostModel.findById(params.id).populate('author');
+	// if(!post) throw new Error("Post no existe")
+
+	// return post.toObject();
+
 }
 
 module.exports = {
 	lstUsuarios,
 	lstRestaurante,
-	singleAuthor,
-	lstComidas
+	lstComidas,
+	buscarComida
 }
